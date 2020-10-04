@@ -1,0 +1,305 @@
+@import url("fontawesome-all.min.css");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
+@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300italic,400,600");
+@font-face{
+    font-family:Font Awesome\ 5 Brands;
+    font-style:normal;
+    font-weight:400;
+    src:url(https://use.fontawesome.com/releases/v5.0.6/webfonts/fa-brands-400.eot);
+    src:url(https://use.fontawesome.com/releases/v5.0.6/webfonts/fa-brands-400.eot?#iefix) format("embedded-opentype"),url(https://use.fontawesome.com/releases/v5.0.6/webfonts/fa-brands-400.woff2) format("woff2"),url(https://use.fontawesome.com/releases/v5.0.6/webfonts/fa-brands-400.woff) format("woff"),url(https://use.fontawesome.com/releases/v5.0.6/webfonts/fa-brands-400.ttf) format("truetype"),url(https://use.fontawesome.com/releases/v5.0.6/webfonts/fa-brands-400.svg#fontawesome) format("svg")
+}
+@font-face{
+    font-family:Font Awesome\ 5 Free;
+    font-style:normal;
+    font-weight:400;
+    src:url(https://use.fontawesome.com/releases/v5.0.6/webfonts/fa-regular-400.eot);
+    src:url(https://use.fontawesome.com/releases/v5.0.6/webfonts/fa-regular-400.eot?#iefix) format("embedded-opentype"),url(https://use.fontawesome.com/releases/v5.0.6/webfonts/fa-regular-400.woff2) format("woff2"),url(https://use.fontawesome.com/releases/v5.0.6/webfonts/fa-regular-400.woff) format("woff"),url(https://use.fontawesome.com/releases/v5.0.6/webfonts/fa-regular-400.ttf) format("truetype"),url(https://use.fontawesome.com/releases/v5.0.6/webfonts/fa-regular-400.svg#fontawesome) format("svg")
+}
+@font-face{
+    font-family:Font Awesome\ 5 Free;
+    font-style:normal;
+    font-weight:900;
+    src:url(https://use.fontawesome.com/releases/v5.0.6/webfonts/fa-solid-900.eot);
+    src:url(https://use.fontawesome.com/releases/v5.0.6/webfonts/fa-solid-900.eot?#iefix) format("embedded-opentype"),url(https://use.fontawesome.com/releases/v5.0.6/webfonts/fa-solid-900.woff2) format("woff2"),url(https://use.fontawesome.com/releases/v5.0.6/webfonts/fa-solid-900.woff) format("woff"),url(https://use.fontawesome.com/releases/v5.0.6/webfonts/fa-solid-900.ttf) format("truetype"),url(https://use.fontawesome.com/releases/v5.0.6/webfonts/fa-solid-900.svg#fontawesome) format("svg")
+}
+
+html, body{
+    margin: 0;
+    padding: 0;
+    background-color: #e7e7e7;
+    background-size: cover;
+    background-position: center;
+    font-family: sans-serif;
+} 
+
+.icon {
+    text-decoration: none;
+    text-decoration: none;
+}
+
+.icon:before {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    line-height: 1;
+    text-transform: none !important;
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 400;
+}
+
+.icon:before {
+    line-height: inherit;
+}
+
+.icon > .label {
+    display: none;
+}
+
+.icon.solid:before {
+    font-weight: 900;
+}
+
+.icon.brands:before {
+    font-family: 'Font Awesome 5 Brands';
+}
+
+.box{
+    width: 609px;
+    height: 812px;
+    background: #000000;
+    color: #fff;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%,-50%);
+    box-sizing: border-box;
+    padding: 70px 30px;
+    border-radius: 20px;
+}
+
+.avatar{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    position: absolute;
+    top: -50px;
+    left: calc(50% - 50px);
+}
+
+h1{
+    margin: 0;
+    padding: 0 0 20px;
+    text-align: center;
+    font-size: 30px;
+}
+
+ul {
+    columns: 5;
+    -webkit-columns: 5;
+    -moz-columns: 5;
+    text-align: center;
+    margin: 0 auto;
+}
+   
+.box p{
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+}
+   
+.box input{
+    width: 100%;
+    margin-bottom: 20px;
+}
+   
+.box input[type="text"], input[type="password"]
+{
+    border: none;
+    border-bottom: 1px solid #fff;
+    background: transparent;
+    outline: none;
+    height: 40px;
+    color: #fff;
+    font-size: 16px;
+}
+   
+.box input[type="submit"]
+{
+    border: none;
+    outline: none;
+    height: 60px;
+    background: #1c8adb;
+    color: #fff;
+    font-size: 18px;
+    text-align: center;
+    border-radius: 20px;
+    margin-top: 20px;
+}
+   
+.box input[type="submit"]:hover
+{
+    cursor: pointer;
+    background: #39dc79;
+    color: #000;
+}
+
+.box input[type="reset"]
+{
+    border: none;
+    outline: none;
+    height: 60px;
+    background: #1c8adb;
+    color: #fff;
+    font-size: 18px;
+    text-align: center;
+    border-radius: 20px;
+}
+   
+.box input[type="reset"]:hover
+{
+    cursor: pointer;
+    background: #39dc79;
+    color: #000;
+}
+
+.box input[type="signup"]
+{
+    border: none;
+    outline: none;
+    height: 40px;
+    background: #1c8adb00;
+    color: #fff;
+    font-size: 18px;
+    text-align: center;
+    border-radius: 20px;
+    position: absolute;
+    left: 30px;
+    bottom: 10px;
+    width: 40%;
+}
+   
+.box input[type="signup"]:hover
+{
+    cursor: pointer;
+    color: #cdcdcd;
+}
+
+.box input[type="back_to_login"]
+{
+    border: none;
+    outline: none;
+    height: 60px;
+    background: #1c8adb;
+    color: #fff;
+    font-size: 18px;
+    text-align: center;
+    border-radius: 20px;
+}
+   
+.box input[type="back_to_login"]:hover
+{
+    cursor: pointer;
+    background: #39dc79;
+    color: #000;
+}
+
+.box input[type="forgot"]
+{
+    border: none;
+    outline: none;
+    height: 40px;
+    background: #1c8bdb00;
+    color: #fff;
+    font-size: 18px;
+    text-align: center;
+    border-radius: 20px;
+    position: absolute;
+    right: 30px;
+    bottom: 10px;
+    width: 40%;
+}
+   
+.box input[type="forgot"]:hover
+{
+    cursor: pointer;
+    color: #cdcdcd;
+}
+
+.box a{
+    text-decoration: none;
+    font-size: 14px;
+    color: #fff;
+}
+
+.login-menu {
+    list-style-type: none;
+    column-count: 2;
+    margin:0 auto;
+    padding: 0 0 0 0;
+}
+
+.box-footer {
+    width: 609px;
+    height: 75px;
+    background: #1f1f1f50;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+
+.icons {
+    list-style-type: none;
+    padding: 20px 0 0 0;
+}
+
+.scroller_box {
+    width: 608px;
+    height: 738px;
+    background: #000000;
+    top: 45.35%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%,-50%);
+    box-sizing: border-box;
+    padding: 70px 30px;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+    overflow-y: scroll;
+    border: 0;
+}
+
+.scroller_box::-webkit-scrollbar {
+    display: none;
+}
+
+.collapsible {
+    background-color: #343434;
+    color: white;
+    cursor: pointer;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    text-align: center;
+    outline: none;
+    font-size: 20px;
+    height: 150px;
+    border-radius: 20px;
+  }
+  
+.active, .collapsible:hover {
+    background-color: #555;
+}
+  
+.content {
+    padding: 0 18px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+    background-color: #555;
+    margin-bottom: 20px;
+}

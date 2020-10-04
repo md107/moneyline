@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MoneyLine</title>
+    <link rel="stylesheet" type= "text/css" href="{{url_for('static', filename='css/main.css')}}">
+</head>
+  <body>
+    <div class='box'>
+      <h1><strong>Welcome to MoneyLine<br>Log In</strong></h1>
+      <div class="index">
+        <div class='cell'>
+            <form id="login" action="/threads">
+                <label>Username:</label>
+                <input type="text" name="userid" size="18" maxlength="18" />
+                <br />
+                <label>Password :</label>
+                <input type="password" name="pswrd" size="18" maxlength="18" />
+                <br />
+                <input type="submit" value="Submit" />
+                <input type="reset" value="Cancel" onclick="myFunction()" value="Reset form" />
+                <ul class='login-menu'>
+                    <li><input type="signup" value="Sign Up" onClick="parent.location='signup'"/></li>
+                    <li><input type="forgot" value="Forgot password" onClick="parent.location='reset_pw'"/></li>
+                </ul>
+            </form>
+        </div>
+    </div>
+    </div>
+  </body>
+</html>

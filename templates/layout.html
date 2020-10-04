@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MoneyLine</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type= "text/css" href="{{url_for('static', filename='css/main.css')}}">
+    <link rel="icon" href="data:,">
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+    
+    
+</head>
+  <body>
+    <div class='box'>
+      {%block content%}
+      {%endblock%}
+      <div class="box-footer">
+        <ul class="icons">
+            <li><a href="/threads"><span class="far fa-comments" style="font-size:36px"></span></a></li>
+            <li><a href="/games"><span class="fas fa-football-ball" style="font-size:36px"></span></a></li>
+            <li><a href="/about"><span class="fa fa-plus-circle" style="font-size:36px"></span></a></li>
+            <li><a href="/faq"><span class="fa fa-question-circle" style="font-size:36px"></span></a></li>
+            <li><a href="/settings"><span class="fa fa-cogs" style="font-size:36px"></span></a></li>
+        </ul>
+      </div>
+    </div>   
+
+    <script>
+      var coll = document.getElementsByClassName("collapsible");
+      var i;
+    
+      for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+          this.classList.toggle("active");
+          var content = this.nextElementSibling;
+          if (content.style.maxHeight){
+            content.style.maxHeight = null;
+          } else {
+            content.style.maxHeight = content.scrollHeight + "px";
+          } 
+        });
+      }
+      </script> 
+  </body>
+  
+</html>
