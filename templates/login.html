@@ -9,13 +9,14 @@
       <h1><strong>Welcome to MoneyLine<br>Log In</strong></h1>
       <div class="index">
         <div class='cell'>
-            <form id="login" action="/threads">
+            <form id="login" method="post" action="">
                 <label>Username:</label>
-                <input type="text" name="userid" size="18" maxlength="18" />
-                <br />
+                <input id='username' type="text" name="username" size="18" maxlength="50">
+                <br>
                 <label>Password :</label>
-                <input type="password" name="pswrd" size="18" maxlength="18" />
-                <br />
+                <input id='password' type="password" name="pswrd" size="18" maxlength="50">
+                <br>
+                <p style='font-weight:normal;'>{{error}}</p>
                 <input type="submit" value="Submit" />
                 <input type="reset" value="Cancel" onclick="myFunction()" value="Reset form" />
                 <ul class='login-menu'>

@@ -7,25 +7,34 @@
   <body>
     <div class='box'>
       <h1><br><strong>Sign Up</strong></h1>
-      <div class="index">
-        <div class='cell'>
-            <form id="signup">
-                <label>Email Address:</label>
-                <input type="text" name="email" size="18" maxlength="18" />
-                <br />
-                <label>Username:</label>
-                <input type="text" name="userid" size="18" maxlength="18" />
-                <br />
-                <label>Password:</label>
-                <input type="password" name="pswrd" size="18" maxlength="18" />
-                <br />
-                <label>Confirm Password:</label>
-                <input type="password" name="cfpw" size="18" maxlength="18" />
-                <br />
-                <input type="submit" value="Submit" />
-                <input type="back_to_login" value="Back" onClick="parent.location='../'" />
-        </div>
-    </div>
-    </div>
+      <form method="post" action="{{ url_for('signup') }}">
+        <label>Email Address:</label>
+        <input id='email' type="text" name="email" size="18" maxlength="50">
+        <br>
+        <label>Username:</label>
+        <input id='username' type="text" name="username" size="18" maxlength="50">
+        <br>
+        <label>Password:</label>
+        <input id='pswrd' type="password" name="pswrd" size="18" maxlength="50">                
+        <br>
+        <label>Confirm Password:</label>
+        <input id='cfpw' type="password" name="cfpw" size="18" maxlength="50">
+        <div class="message">{{ message }}</div>
+        <br>
+        <input type="submit" value="Submit" />
+        <input type="back_to_login" value="Back" onClick="parent.location='../'" />
+      </form>
+      
+  </div>
+  <script>
+    var check = function() {
+      if (document.getElementById('pswrd').value == document.getElementById('cfpw').value) {
+        document.getElementById('message').innerHTML = 'Password Matched';
+      } else {
+        document.getElementById('message').innerHTML = 'Password does not match.';
+      }
+    }
+  </script>
   </body>
+
 </html>

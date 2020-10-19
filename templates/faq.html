@@ -1,0 +1,86 @@
+{% extends "layout.html" %}
+{%block content%}
+<!-- <div class='tab'>
+    <button class="tablinks" onclick="openCity(event, 'London')">London</button>
+    <button class="tablinks" onclick="openCity(event, 'Paris')">Paris</button>
+</div> -->
+
+<div class="tab">
+    <button style='width:50%;float:left;' class="tablinks" onclick="openTab(event, 'betting101')">Betting 101</button>
+    <button style='width:50%;float:right;' class="tablinks" onclick="openTab(event, 'bettingFAQ')">Beting FAQ</button>
+</div>
+
+<div id='betting101' class='tabcontent'>
+    <ul style='text-align:left;margin-left:0;margin-top:-30px;padding:10px;font-size:20px'>
+        {% for item in content %}
+            <li style='margin-bottom:5px;'>{{item}}</li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div id='bettingFAQ' class='tabcontent'>
+    <ul style='text-align:left;margin-left:0;margin-top:-30px;padding:10px;font-size:20px'>
+        <li style='display:block;'>
+            <button class="tabcollapsible"><strong>Q: Where can I bet legally on Sports?</strong></button>
+            <div class="tabcollapsiblecontent">Leaving aside various forms of (animal) racing, there are at least four ways to bet on sports in the US, and of these two are legal, one is illegal, and one is ambiguous.
+                You can bet legally at licensed Nevada sportsbooks, and illegally with bookies in virtually every town. Most of the following describes the ins and outs of gambling at sports books. There are two points worth noting here. First, Nevada sportsbooks can set up phone accounts, but will not accept wagers across state lines. Second, odds with illegal bookies are often worse than those one can get in Nevada.
+                Betting with offshore (international) sports books seems to be on the rise, and promises to spread from phone services to internet based online services. From the point of view of bets and odds offered, these books are similar to licensed Nevada sportsbooks. The legality of these services is, at best, ambiguous. There are claims and opinions on all sides of the argument, but few legal precedents. In addition, some offshore books are run by old trustworthy firms, some are fly-by-night scams, and many are somewhere in between. Cavaet Bettor.
+                The last way (and other than in state Nevada betting the only other clearly legal way) to bet on sports in the US is the Oregon Lottery. This was described as follows in a rec.gambling post:
+                The Oregon lottery is alive and well as far as football betting. The game is called sports action. The line is set by Jim Feist. It is set and printed on Wednesday and does not change. This can work to the bettor's advantage due to changes in team lineups due to injuries and such. The minimum wager is $2.00 and the minimum number of games bet is 3. The payoffs for a three game win is $5.00 per dollar wagered. Four games gets $10.00 per dollar wagered. 
+                All other wagers are paid on a paramutual fashion. For example, a seven game winner usually pays around $160 to $350. The maximum number of games that can be bet have a winner. A week or two ago $14,000 carried over in the 14 pool. There are also some games that are called special play games with over/under total score. The line seems to be fairly consistent with the Vegas line on the Wednesday that it is set.</div>
+        </li>
+        <li style='display:block;'>
+            <button class="tabcollapsible"><strong>Q: What sports can I bet on?</strong></button>
+            <div class="tabcollapsiblecontent">You can bet on any sport the sportsbook you are wagering with covers. At most books, this includes professional and college football and basketball, professional baseball, professional hockey, and horse and dog racing. Every now and then sportsbooks will offer proposition bets (see below) on events like professional golf tournaments and the Indy 500 and the like, but not on a regular basis for other events in those sports.</div>
+        </li>
+        <li style='display:block;'>
+            <button class="tabcollapsible"><strong>Q: What is "the spread"?</strong></button>
+            <div class="tabcollapsiblecontent">The spread is a point advantage given to a weaker team that is expected to lose by X number of points. This is the odds makers way of making even bets possible for a sportsbook. Usually if you bet against the spread you make an 11-10 bet. This means that you win $10 if you bet $11 for a total of $21 if your team covers the spread.
+                A team covers the spread if it wins the game with the score modified by the spread. If Dallas and Washington are playing and the spread is (Dallas -7), then Dallas has to win by at least 8 points to cover. Half-point spreads are also possible. </div>
+        </li>
+        <li style='display:block;'>
+            <button class="tabcollapsible"><strong>Q: Why do I have to bet $11 to win $10?</strong></button>
+            <div class="tabcollapsiblecontent">This is one of the many ways the sportsbook makes its money. In an ideal situation, the same amount of money will be bet on both sides of the line and the sportsbook will take its 10% from the losing side. If $55000 ($50000 and an additional $5000 to make the bets) was bet on Washington and $55000 bet on Dallas, no matter who wins the game the sportsbook will make $5000. In case of a tie, all money is refunded. This is a rather simplified version as the spread moves when one side becomes more heavily bet on.</div>
+        </li>
+        <li style='display:block;'>
+            <button class="tabcollapsible"><strong>Q: What are all of the different types of bets?</strong></button>
+            <div class="tabcollapsiblecontent"></div>
+        </li>
+        <li style='display:block;'>
+            <button class="tabcollapsible"><strong>Q: Can I make a million dollars with one bet?</strong></button>
+            <div class="tabcollapsiblecontent">Sure. Bet $1,100,000 straight up.</div>
+        </li>
+        <li style='display:block;'>
+            <button class="tabcollapsible"><strong>Q: Who makes the odds?</strong></button>
+            <div class="tabcollapsiblecontent">Las Vegas Sports Consultants Inc., establishes the odds for about 75% of the licensed sportsbooks in Nevada, as well as for the Oregon State Lottery. It is run by Michael 'Roxy' Roxborough. He also operates as a consultant on gaming strategies, management, marketing, and personnel. Most illegal books in and out of Nevada draw their odds from what is posted at the various casinos. Transmitting gambling information across state lines for the purpose of placing or taking bets is illegal. News items about point spreads and the like can be reported for informational and entertainment purposes only.</div>
+        </li>
+        <li style='display:block;'>
+            <button class="tabcollapsible"><strong>Q: Do I have to be over 21 to bet on sports?</strong></button>
+            <div class="tabcollapsiblecontent">Yes.</div>
+        </li>
+        <li style='display:block;'>
+            <button class="tabcollapsible"><strong>Q: What is the minimum bet that must be reported to the IRS?</strong></button>
+            <div class="tabcollapsiblecontent">Well all gambling wins and losses are supposed to be reported to the IRS at the end of the year, but if you bet more than $10,000 at once, you must fill out some IRS paperwork at the ticket counter. All money won must be reported to the IRS.</div>
+        </li>
+        </li>
+    </ul>
+</div>
+
+<script>
+    document.getElementsByClassName('tablinks')[0].click()
+    function openTab(event, tabName) {
+      var i, tabcontent, tablinks;
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+      tablinks = document.getElementsByClassName("tablinks");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
+      document.getElementById(tabName).style.display = "block";
+      event.currentTarget.className += " active";
+    }
+</script>
+
+{%endblock%}
