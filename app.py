@@ -12,6 +12,9 @@ from MySQLdb import escape_string
 from dbconnect import connection
 from passlib.hash import sha256_crypt
 import gc, re
+import json
+import requests
+from functools import wraps
 
 import os
 
@@ -24,6 +27,23 @@ app.config['SECRET_KEY'] = '999999999999999'
 # login_manager.init_app(app)
 # login_manager.login_view = 'login'
 db = SQLAlchemy(app)
+
+def login_required(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        if 'loggedin' in session:
+            return f(*args, **kwargs)
+        else:
+            return redirect(url_for('index'))
+
+    return wrap
+
+@app.route('/logout')
+@login_required
+def logout():
+    session.clear()
+    flash("You need to log in first")
+    return redirect(url_for('index'))
 
 @ app.route('/', methods=["GET", "POST"])
 def index():
@@ -82,19 +102,14 @@ def reset_pw():
     return render_template('reset_pw.html')
 
 @ app.route('/threads')
+@login_required
 def threads():
     return render_template('threads.html')
 
 @ app.route('/games')
+@login_required
 def games():
-    
-    import json
-    import requests
-
-
     api_key = '0c99967b1d1c94b6e0a2a1fa4e2379db'
-
-
 
     sports_response = requests.get('https://api.the-odds-api.com/v3/sports', params={
         'api_key': api_key
@@ -116,10 +131,8 @@ def games():
         )
         print(sports_json['data'][0])
 
-
-
-# To get odds for a sepcific sport, use the sport key from the last request
-#   or set sport to "upcoming" to see live and upcoming across all sports
+    # To get odds for a sepcific sport, use the sport key from the last request
+    #   or set sport to "upcoming" to see live and upcoming across all sports
     sport_key = 'upcoming'
 
     odds_response = requests.get('https://api.the-odds-api.com/v3/odds', params={
@@ -155,6 +168,7 @@ def games():
     return render_template('games.html')
 
 @ app.route('/faq')
+@login_required
 def faq(content=None):
     with open('static/betting101.txt', 'r') as f: 
         content = f.readlines()
@@ -162,10 +176,12 @@ def faq(content=None):
     return render_template('faq.html', content=content)
 
 @ app.route('/settings')
+@login_required
 def settings():
     return render_template('settings.html')
 
 @ app.route('/about')
+@login_required
 def about():
     return 'About'
 
