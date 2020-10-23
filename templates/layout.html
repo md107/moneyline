@@ -40,6 +40,23 @@
           } 
         });
       }
+    </script> 
+
+    <script>
+      var coll = document.getElementsByClassName("tabcollapsible");
+      var i;
+    
+      for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+          this.classList.toggle("active");
+          var tabcollapsiblecontent = this.nextElementSibling;
+          if (tabcollapsiblecontent.style.maxHeight){
+            tabcollapsiblecontent.style.maxHeight = null;
+          } else {
+            tabcollapsiblecontent.style.maxHeight = tabcollapsiblecontent.scrollHeight + "px";
+          } 
+        });
+      }
       </script> 
   </body>
   

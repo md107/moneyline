@@ -1,0 +1,59 @@
+Action: Having a wager on a game.
+ATS ("against the [point] spread"): If a team is 5-2 ATS, it means it has a 5-2 record against the point spread, or more commonly referred to simply as the "spread".
+Backdoor cover: When a team scores points at the end of a game to cover the spread unexpectedly.
+Bad beat: Losing a bet you should have won. It's especially used when the betting result is decided late in the game to change the side that covers the spread. Also used in poker, such as when a player way ahead in the expected win percentage loses on the river (last card).
+Beard: Someone who places a wager for another person (aka "runner").
+Book: Short for sportsbook or bookmaker; person or establishment that takes bets from customers.
+Bookie: A person who accepts bets illegally and charges vig.
+Buying points: Some bookies or sportsbooks will allow customers to alter the set line and then adjust odds. For example, a bettor might decide he wants to have his team as a 3-point underdog instead of the set line of 2.5. He has then "bought" half a point, and the odds of his bet will be changed.
+Chalk: The favorite in the game. People said to be "chalk" bettors typically bet the favorite.
+Circle game: A game for which the betting limits are lowered, usually because of injuries and/or weather.
+Closing line: The final line before the game or event begins.
+Consensus pick: Derived from data accumulated from a variety of sportsbooks in PickCenter. The pick, and its percentage, provides insight as to what side the public is taking in a game.
+Cover: The betting result on a point-spread wager. For a favorite to cover, it has to win by more than the spread; an underdog covers by winning outright or losing by less than the spread.
+Dime: Jargon for a $1,000 bet. If you bet "three dimes," that means a $3,000 wager.
+Dog: Short for underdog.
+Dollar: Jargon for a $100 bet. Usually used with bookies; if you bet "five dollars," that means a $500 wager.
+Edge: An advantage. Sports bettors might feel they have an edge on a book if they think its lines aren't accurate.
+Even money: Odds that are considered 50-50. You put up $1 to win $1.
+Exotic: Any wager other than a straight bet or parlay; can also be called a "prop" or "proposition wager."
+Favorite: The expected straight-up winner in a game or event. Depending on the sport, the favorite will lay either odds or points. For example, in a football game, if a team is a 2.5-point favorite, it will have to win by three points or more to be an ATS winner.
+Fixed: A participant in a particular game who alters the result of that game or match to a completely or partially predetermined result. The participant did not play honestly or fairly because of an undue outside influence.
+Futures bet: A long-term wager that typically relates to a team's season-long success. Common futures bets include betting a team to win a championship at the outset of a season, or betting whether the team will win or lose more games than a set line at the start of the season.
+Halftime bet: A bet made after the first half ended and before the second half begins (football and basketball primarily). The oddsmaker generally starts with half of the game side/total and adjusts based on what happened in the first half.
+Handicapper: A person trying to predict the winners of an event.
+Handle: The amount of money taken by a book on an event or the total amount of money wagered.
+Hedging: Betting the opposing side of your original bet, to either ensure some profit or minimize potential loss. This is typically done with futures bets, but can also be done on individual games with halftime bets or in-game wagering.
+High roller: A high-stakes gambler.
+Hook: A half-point. If a team is a 7.5-point favorite, it is said to be "laying seven and a hook."
+In-game wagering: A service offered by books in which bettors can place multiple bets in real time, as the game is occurring.
+Juice: The commission the bookie or bookmaker takes. Standard is 10 percent. Also called the "vig/vigorish."
+Layoff: Money bet by a sportsbook with another sportsbook or bookmaker to reduce that book's liability.
+Limit: The maximum bet taken by a book. If a book has a $10,000 limit, it'll take that bet but the book will then decide whether it's going to adjust the line before the bettor can bet again.
+Lock: A guaranteed win in the eyes of the person who made the wager.
+Middle: When a line moves, a bettor can try to "middle" a wager and win both sides with minimal risk. Suppose a bettor bets one team as a 2.5-point favorite, then the line moves to 3.5 points. She can then bet the opposite team at 3.5 and hope the favorite wins by three points. She would then win both sides of the bet.
+Money line (noun), money-line (modifier): A bet in which your team only needs to win. The point spread is replaced by odds.
+Mush: A bettor or gambler who is considered to be bad luck.
+Nickel: Jargon for a $500 bet. Usually used with bookies; if you bet "a nickel," that means a $500 wager.
+Oddsmaker (also linemaker): The person who sets the odds. Some people use it synonymous with "bookmaker" and often the same person will perform the role at a given book, but it can be separate if the oddsmaker is just setting the lines for the people who will eventually book the bets.
+Off the board: When a book or bookie has taken a bet down and is no longer accepting action or wagers on the game. This can happen if there is a late injury or some uncertainty regarding who will be participating.
+Over/under: A term that can be used to describe the total combined points in a game (the Ravens-Steelers over/under is 40 points) or the number of games a team will win in a season (the Broncos' over/under win total is 11.5). Also used in prop bets.
+Parlay: A wager in which multiple teams are bet, either against the spread or on the money line. For the wager to win (or pay out), all of them must cover/win. The more teams you bet, the greater the odds.
+Pick 'em: A game with no favorite or underdog. The point spread is zero, and the winner of the game is also the spread winner.
+Point spread (or just "spread"): The number of points by which the supposed better team is favored over the underdog.
+Proposition (or prop) bet: A special or exotic wager that's not normally on the betting board, such as which team will score first or how many yards a player will gain. Sometimes called a "game within a game." These are especially popular on major events, with the Super Bowl being the ultimate prop betting event.
+Push: When a result lands on the betting number and all wagers are refunded. For example, a 3-point favorite wins by exactly three points. Return on investment (ROI): In PickCenter, ROI is the amount (according to numberFire) that a bettor should expect to get back on a spread pick.
+Runner: Someone who makes bets for another person (aka "beard").
+Sharp: A professional, sophisticated sports bettor.
+Spread: Short for point spread.
+Square: A casual gambler. Someone who typically isn't using sophisticated reasoning to make a wager.
+Steam: When a line is moving unusually fast. It can be a result of a group or syndicate of bettors all getting their bets in at the same time. It can also occur when a respected handicapper gives a bet his followers all jump on, or based on people reacting to news such as an injury or weather conditions.
+Straight up: The expected outright winner of the money line in an event or game, not contingent on the point spread.
+Teaser: Betting multiple teams and adjusting the point spread in all the games in the bettor's favor. All games have to be picked correctly to win the wager.
+Total: The perceived expected point, run or goal total in a game. For example, in a football game, if the total is 41 points, bettors can bet "over" or "under" on that perceived total.
+Tout (service): a person (or group of people) who either sells or gives away picks on games or events.
+Underdog: The team that is expected to lose straight up. You can either bet that the team will lose by less than the predicted amount (ATS), or get better than even-money odds that it will win the game outright. For example, if a team is a 2-1 underdog, you can bet $100 that the team will win. If it wins, you win $200 plus receive your original $100 wager back.
+Vig/vigorish: The commission the bookie or bookmaker takes; also called the "juice." Standard is 10 percent.
+Wager: A bet.
+Welch: To not pay off a losing bet.
+Wiseguy: A professional bettor. Another term for a "sharp."

@@ -103,11 +103,7 @@ h1{
 }
 
 ul {
-    columns: 5;
-    -webkit-columns: 5;
-    -moz-columns: 5;
     text-align: center;
-    margin: 0 auto;
 }
    
 .box p{
@@ -259,8 +255,12 @@ ul {
 }
 
 .icons {
+    columns: 5;
+    -webkit-columns: 5;
+    -moz-columns: 5;
     list-style-type: none;
     padding: 20px 0 0 0;
+    margin: 0 auto;
 }
 
 .scroller_box {
@@ -300,17 +300,52 @@ ul {
     vertical-align: middle;
     position: relative;
 }
-  
+
 .active, .collapsible:hover {
     background-color: #555;
 }
-  
+
 .content {
     padding: 0 18px;
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.2s ease-out;
     background-color: #555;
+    margin-bottom: 20px;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+
+.tabcollapsible {
+    display: block;
+    position: relative;
+    overflow:auto;
+    background-color: #343434;
+    color: white;
+    cursor: pointer;
+    text-align: left;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+    font-size: 20px;
+    top: 50%;
+    width: 568px;
+    min-height: 50px;
+    padding: 10px;
+    margin-left: -20px;
+}
+  
+.active, .tabcollapsible:hover {
+    background-color: #555;
+}
+
+.tabcollapsiblecontent {
+    padding: 0 18px;
+    width: 530px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+    background-color: #555;
+    margin-left: -20px;
     margin-bottom: 20px;
     border-bottom-right-radius: 20px;
     border-bottom-left-radius: 20px;
@@ -338,8 +373,59 @@ ul {
     padding: 0;
   }
 
-  .thread_footer {
-      background: red;
-      height: 50px;
-      width: 100%
+.thread_footer {
+    background: red;
+    height: 50px;
+    width: 100%
+}
+
+.tab {
+    width: 609px;
+    height: 75px;
+    background: #1f1f1f50;
+    position: absolute;
+    right: 0;
+    top: 0;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+    overflow: hidden;
+}
+
+.tab button {
+    font-size: 20px;
+    color: white;
+    height: 75px;
+    text-align: center;
+    background: #1f1f1f50;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.tab button:hover {
+    background-color: #555;
   }
+  
+.tab button.active {
+    background-color: #555;
+}
+
+.tabcontent {
+    display: none;
+    width: 608px;
+    height: 663px;
+    background: #000000;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%,-50%);
+    box-sizing: border-box;
+    padding: 70px 30px;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+    overflow-y: scroll;
+    border: 0;
+}
+
+.tabcontent::-webkit-scrollbar {
+    display: none;
+}
