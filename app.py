@@ -11,6 +11,7 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 from MySQLdb import escape_string
 from dbconnect import connection
 from passlib.hash import sha256_crypt
+import sqlite3
 import gc, re
 
 import os
@@ -25,10 +26,18 @@ app.config['SECRET_KEY'] = '999999999999999'
 # login_manager.login_view = 'login'
 db = SQLAlchemy(app)
 
+def get_db_connection():
+    conn = get_db_connection
+    posts = conn.execute('SELECT * FROM posts').fetchall()
+    conn.row_factory =sqlite3.Row
+    return conn
+
 @ app.route('/', methods=["GET", "POST"])
 def index():
     error = ''
-    c, conn = connection()
+    c, conn = get_db_connection()
+    posts = conn.execute('SELECT * FROM posts').fetchall()
+    conn.close()
     if request.method == "POST":
         input_username = request.form['username']
         input_password = str(request.form['pswrd'])
@@ -45,6 +54,7 @@ def index():
             error = "Invalid credential! Please try again."
 
     gc.collect()
+    
     return render_template("login.html", error = error)
 
 @ app.route('/signup', methods=["GET", "POST"])
@@ -155,7 +165,7 @@ def games():
     return render_template('games.html')
 
 @ app.route('/faq')
-def faq(content=None):
+def faq(content=None):conn
     with open('static/betting101.txt', 'r') as f: 
         content = f.readlines()
         content = [x.strip() for x in content]
@@ -169,5 +179,8 @@ def settings():
 def about():
     return 'About'
 
+
+
 if __name__ == "__main__":
     app.run(debug=True)
+    
