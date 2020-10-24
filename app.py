@@ -191,10 +191,10 @@ def profile():
         c.execute("UPDATE users SET user_name = %s WHERE user_username = %s", (escape_string(name), escape_string(username)))
     return render_template('profile.html', name=name, username=username)
 
-@ app.route('/about')
+@ app.route('/newPost')
 @login_required
-def about():
-    return 'About'
+def add_post():
+    return render_template('add_post.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
