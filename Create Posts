@@ -1,5 +1,5 @@
 #in terminal
-nano app.py
+#nano app.py
 
 #in python
 import sqlite3
@@ -22,7 +22,7 @@ def create():
     return render_template('create.html')
     
 #in terminal
-nano templates/create.html
+#nano templates/create.html
 
 #in python (create the template for the post)
 {% extends 'base.html' %}
@@ -50,7 +50,7 @@ nano templates/create.html
 {% endblock %}
 
 #in terminal
-nano app.py
+#nano app.py
 
 #in python (create the ability when the user clicks "submit" for the db to store the post)
 
