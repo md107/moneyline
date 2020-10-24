@@ -13,7 +13,7 @@
      UNIQUE (user_id, user_username, user_email)
 );
 
-CREATE TABLE threads(
+CREATE TABLE posts(
     thread_id BIGINT AUTO_INCREMENT PRIMARY KEY,
     thread_username VARCHAR(50) NOT NULL FOREIGN KEY REFERENCES users(user_username),
     thread_bodytext VARCHAR(MAX),
