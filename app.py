@@ -49,23 +49,25 @@ def logout():
 def index():
     error = ''
     c, conn = connection()
-    if request.method == "POST":
-        input_username = request.form['username']
-        input_password = str(request.form['pswrd'])
-        c.execute("SELECT * FROM users WHERE user_username = % s", (escape_string(input_username),))
-        data = c.fetchone()
+    try:
+        if request.method == "POST":
+            input_username = request.form['username']
+            input_password = str(request.form['pswrd'])
+            c.execute("SELECT * FROM users WHERE user_username = % s", (escape_string(input_username),))
+            data = c.fetchone()
         
-        if input_password == data[3]:
-            session['loggedin'] = True
-            session['username'] = input_username
+            if input_password == data[3]:
+                session['loggedin'] = True
+                session['username'] = input_username
+                return redirect(url_for("threads"))
+            else:
+                error = "Invalid credential! Please try again."
 
-            return redirect(url_for("threads"))
-            
-        else:
-            error = "Invalid credential! Please try again."
-
-    gc.collect()
-    return render_template("login.html", error = error)
+        gc.collect()
+        return render_template("login.html", error = error)
+    except Exception as e:
+        error = e
+        return render_template("login.html")
 
 @ app.route('/signup', methods=["GET", "POST"])
 def signup():
@@ -91,6 +93,7 @@ def signup():
             c.execute("INSERT INTO users (user_username, user_password, user_email) VALUES (%s, %s, %s)", (escape_string(username), escape_string(password), escape_string(email)))               
             conn.commit()
             message = "Thank you for registering. Welcome to MoneyLine!"
+            return redirect(url_for("index"))
 
     elif request.method == 'POST':
         message = "Missing information! (Fill out)"        
@@ -175,10 +178,18 @@ def faq(content=None):
         content = [x.strip() for x in content]
     return render_template('faq.html', content=content)
 
-@ app.route('/settings')
+@ app.route('/profile')
 @login_required
-def settings():
-    return render_template('settings.html')
+def profile():
+    username = session['username']
+    c, conn = connection()
+    c.execute("SELECT * FROM users WHERE user_username = % s", (escape_string(username),))
+    acct = c.fetchone()
+    name = acct[1]
+    if name is None:
+        name = username
+        c.execute("UPDATE users SET user_name = %s WHERE user_username = %s", (escape_string(name), escape_string(username)))
+    return render_template('profile.html', name=name, username=username)
 
 @ app.route('/about')
 @login_required
