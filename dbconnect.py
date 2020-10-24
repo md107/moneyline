@@ -3,7 +3,7 @@ import MySQLdb
 def connection():
     conn = MySQLdb.connect(host='localhost',
                             user='root',
-                            passwd='Logan@6824',
+                            passwd='PASSWORD',
                             db='MoneyLine')
     c = conn.cursor()
     return c, conn
