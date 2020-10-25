@@ -107,6 +107,13 @@ def reset_pw():
 @ app.route('/threads')
 @login_required
 def threads():
+    conn, c = connection()
+    post = c.execute('SELECT * FROM posts WHERE id = ?',
+                        (post_id,)).fetchone()
+    c.close()
+    if post is None:
+        abort(404)
+    return post
     return render_template('threads.html')
 
 @ app.route('/games')
@@ -191,10 +198,24 @@ def profile():
         c.execute("UPDATE users SET user_name = %s WHERE user_username = %s", (escape_string(name), escape_string(username)))
     return render_template('profile.html', name=name, username=username)
 
-@ app.route('/newPost')
+@ app.route('/newPost', methods=["GET", "POST"])
 @login_required
 def add_post():
-    return render_template('add_post.html')
+    if request.method == "GET":
+        return render_template('add_post.html')
+    if request.method == "POST":
+        post = request.form['post']
+
+        if not post:
+            flash('Text is required!')
+        else:
+            c, conn = connection()
+            conn.execute('INSERT INTO posts (post) VALUES (?)',
+                         (content))
+            c.commit()
+            c.close()
+            return redirect(url_for('index'))
+        return render_template('add_post.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
