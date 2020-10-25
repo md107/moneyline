@@ -107,74 +107,27 @@ def reset_pw():
 @ app.route('/threads')
 @login_required
 def threads():
-    conn, c = connection()
-    post = c.execute('SELECT * FROM posts WHERE id = ?',
-                        (post_id,)).fetchone()
-    c.close()
-    if post is None:
-        abort(404)
-    return post
-    return render_template('threads.html')
+    c, conn = connection()
+    c.execute("SELECT * FROM posts ORDER BY post_posted DESC LIMIT 5")
+    posts = c.fetchall()
+    user1, user2, user3, user4, user5 = (post[1] for post in posts)
+    body1, body2, body3, body4, body5 = (post[2] for post in posts)
+
+    return render_template('threads.html', user1=user1, user2=user2, user3=user3, user4=user4, user5=user5, body1=body1, body2=body2, body3=body3, body4=body4, body5=body5)
 
 @ app.route('/games')
 @login_required
 def games():
-    api_key = '0c99967b1d1c94b6e0a2a1fa4e2379db'
+    f = open('odds.json')
+    odds = json.load(f)
 
-    sports_response = requests.get('https://api.the-odds-api.com/v3/sports', params={
-        'api_key': api_key
-    })
-
-    sports_json = json.loads(sports_response.text)
-
-    if not sports_json['success']:
-        print(
-            'There was a problem with the sports request:',
-            sports_json['msg']
-        )
-
-    else:
+    for odd in odds:
+        team1, team2 = odd['teams']
+        odds = []
+        for site in odd['sites']:
+            odds.append(site['odds']['h2h'])
+        print(team1,',', team2, odds)
         print()
-        print(
-            'Successfully got {} sports'.format(len(sports_json['data'])),
-            'Here\'s the first sport:'
-        )
-        print(sports_json['data'][0])
-
-    # To get odds for a sepcific sport, use the sport key from the last request
-    #   or set sport to "upcoming" to see live and upcoming across all sports
-    sport_key = 'upcoming'
-
-    odds_response = requests.get('https://api.the-odds-api.com/v3/odds', params={
-        'api_key': api_key,
-        'sport': sport_key,
-        'region': 'uk', # uk | us | eu | au
-        'mkt': 'h2h' # h2h | spreads | totals
-    })
-
-    odds_json = json.loads(odds_response.text)
-    if not odds_json['success']:
-        print(
-            'There was a problem with the odds request:',
-            odds_json['msg']
-      )
-
-    else:
-    # odds_json['data'] contains a list of live and 
-    #   upcoming events and odds for different bookmakers.
-    # Events are ordered by start time (live events are first)
-        print()
-        print(
-            'Successfully got {} events'.format(len(odds_json['data'])),
-            'Here\'s the first event:'
-        )
-        print(odds_json['data'][0])
-
-    # Check your usage
-        print()
-        print('Remaining requests', odds_response.headers['x-requests-remaining'])
-        print('Used requests', odds_response.headers['x-requests-used'])
-
     return render_template('games.html')
 
 @ app.route('/faq')
@@ -201,21 +154,24 @@ def profile():
 @ app.route('/newPost', methods=["GET", "POST"])
 @login_required
 def add_post():
-    if request.method == "GET":
-        return render_template('add_post.html')
-    if request.method == "POST":
+    message =''
+    if request.method == "POST" and 'post' in request.form:
+        username = session['username']
         post = request.form['post']
+        c, conn = connection()
 
-        if not post:
-            flash('Text is required!')
-        else:
-            c, conn = connection()
-            conn.execute('INSERT INTO posts (post) VALUES (?)',
-                         (content))
-            c.commit()
-            c.close()
-            return redirect(url_for('index'))
-        return render_template('add_post.html')
+        c.execute("INSERT INTO posts (post_username, post_bodytext) VALUES (%s, %s)", (escape_string(username), escape_string(post)))       
+        conn.commit()
+        return redirect(url_for("threads"))
+
+    elif request.method == 'POST':
+        message = 'Please add body text!'
+
+    return render_template('add_post.html',message=message)
+
+@ app.route('/about')
+def about():
+    return render_template('about.html')
 
 if __name__ == "__main__":
     app.run(debug=True)

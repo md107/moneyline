@@ -371,7 +371,11 @@ ul {
     text-align: center;
     background: #636262;
     padding: 0;
-  }
+}
+
+.circle>img {
+    line-height:100px;
+}
 
 .thread_footer {
     background: red;
