@@ -11,7 +11,6 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 from MySQLdb import escape_string
 from dbconnect import connection
 from passlib.hash import sha256_crypt
-import sqlite3
 import gc, re
 import json
 import requests
@@ -29,12 +28,6 @@ app.config['SECRET_KEY'] = '999999999999999'
 # login_manager.login_view = 'login'
 db = SQLAlchemy(app)
 
-def get_db_connection():
-    conn = get_db_connection
-    posts = conn.execute('SELECT * FROM posts').fetchall()
-    conn.row_factory =sqlite3.Row
-    return conn
-  
 def login_required(f):
     @wraps(f)
     def wrap(*args, **kwargs):
@@ -44,7 +37,7 @@ def login_required(f):
             return redirect(url_for('index'))
 
     return wrap
-  
+
 @app.route('/logout')
 @login_required
 def logout():
@@ -52,33 +45,9 @@ def logout():
     flash("You need to log in first")
     return redirect(url_for('index'))
 
-
 @ app.route('/', methods=["GET", "POST"])
 def index():
     error = ''
-<<<<<<< HEAD
-    c, conn = get_db_connection()
-    posts = conn.execute('SELECT * FROM posts').fetchall()
-    conn.close()
-    if request.method == "POST":
-        input_username = request.form['username']
-        input_password = str(request.form['pswrd'])
-        c.execute("SELECT * FROM users WHERE user_username = % s", (escape_string(input_username),))
-        data = c.fetchone()
-        
-        if input_password == data[3]:
-            session['loggedin'] = True
-            session['username'] = input_username
-
-            return redirect(url_for("threads"))
-            
-        else:
-            error = "Invalid credential! Please try again."
-
-    gc.collect()
-    
-    return render_template("login.html", error = error)
-=======
     c, conn = connection()
     try:
         if request.method == "POST":
@@ -99,7 +68,6 @@ def index():
     except Exception as e:
         error = e
         return render_template("login.html")
->>>>>>> a8a6e68f51917a67b8d95eb5a26c6c50bd827842
 
 @ app.route('/signup', methods=["GET", "POST"])
 def signup():
@@ -249,8 +217,5 @@ def add_post():
             return redirect(url_for('index'))
         return render_template('add_post.html')
 
-
-
 if __name__ == "__main__":
     app.run(debug=True)
-    
