@@ -8,6 +8,7 @@ from wtforms import Form, TextField, PasswordField, BooleanField, validators
 from wtforms.validators import InputRequired, Email, Length
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from flask_mysqldb import MySQL
 from MySQLdb import escape_string
 from dbconnect import connection
 from passlib.hash import sha256_crypt
@@ -20,13 +21,26 @@ import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '999999999999999'
+app = Flask(__name__)
+
+# Change this to your secret key (can be anything, it's for extra protection)
+app.secret_key = 'your secret key'
+
+# Enter your database connection details below
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'csds393'
+app.config['MYSQL_PASSWORD'] = 'moneyline'
+app.config['MYSQL_DB'] = 'MoneyLine'
+
+# Intialize MySQL
+db = MySQL(app)
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////mnt/c/Users/antho/Documents/login-example/database.db'
 # bootstrap = Bootstrap(app)
 # db = SQLAlchemy(app)
 # login_manager = LoginManager()
 # login_manager.init_app(app)
 # login_manager.login_view = 'login'
-db = SQLAlchemy(app)
+# db = SQLAlchemy(app)
 
 def login_required(f):
     @wraps(f)
@@ -76,6 +90,7 @@ def signup():
         username = request.form['username']
         email = request.form['email']
         password = str(request.form['pswrd'])
+        confirm_pw = str(request.form['cfpw'])
         c, conn = connection()
 
         c.execute("SELECT * FROM users WHERE user_username = % s", (escape_string(username),))
@@ -89,6 +104,8 @@ def signup():
             message = "Invalid username!"
         elif not username or not password or not email:
             message = "Missing information!"
+        elif password != confirm_pw:
+            message = 'Password not match, please try again'
         else:
             c.execute("INSERT INTO users (user_username, user_password, user_email) VALUES (%s, %s, %s)", (escape_string(username), escape_string(password), escape_string(email)))               
             conn.commit()
