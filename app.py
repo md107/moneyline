@@ -13,6 +13,9 @@ from dbconnect import connection
 from passlib.hash import sha256_crypt
 import sqlite3
 import gc, re
+import json
+import requests
+from functools import wraps
 
 import os
 
@@ -31,10 +34,29 @@ def get_db_connection():
     posts = conn.execute('SELECT * FROM posts').fetchall()
     conn.row_factory =sqlite3.Row
     return conn
+  
+def login_required(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        if 'loggedin' in session:
+            return f(*args, **kwargs)
+        else:
+            return redirect(url_for('index'))
+
+    return wrap
+  
+@app.route('/logout')
+@login_required
+def logout():
+    session.clear()
+    flash("You need to log in first")
+    return redirect(url_for('index'))
+
 
 @ app.route('/', methods=["GET", "POST"])
 def index():
     error = ''
+<<<<<<< HEAD
     c, conn = get_db_connection()
     posts = conn.execute('SELECT * FROM posts').fetchall()
     conn.close()
@@ -56,6 +78,28 @@ def index():
     gc.collect()
     
     return render_template("login.html", error = error)
+=======
+    c, conn = connection()
+    try:
+        if request.method == "POST":
+            input_username = request.form['username']
+            input_password = str(request.form['pswrd'])
+            c.execute("SELECT * FROM users WHERE user_username = % s", (escape_string(input_username),))
+            data = c.fetchone()
+        
+            if input_password == data[3]:
+                session['loggedin'] = True
+                session['username'] = input_username
+                return redirect(url_for("threads"))
+            else:
+                error = "Invalid credential! Please try again."
+
+        gc.collect()
+        return render_template("login.html", error = error)
+    except Exception as e:
+        error = e
+        return render_template("login.html")
+>>>>>>> a8a6e68f51917a67b8d95eb5a26c6c50bd827842
 
 @ app.route('/signup', methods=["GET", "POST"])
 def signup():
@@ -81,6 +125,7 @@ def signup():
             c.execute("INSERT INTO users (user_username, user_password, user_email) VALUES (%s, %s, %s)", (escape_string(username), escape_string(password), escape_string(email)))               
             conn.commit()
             message = "Thank you for registering. Welcome to MoneyLine!"
+            return redirect(url_for("index"))
 
     elif request.method == 'POST':
         message = "Missing information! (Fill out)"        
@@ -92,19 +137,21 @@ def reset_pw():
     return render_template('reset_pw.html')
 
 @ app.route('/threads')
+@login_required
 def threads():
+    conn, c = connection()
+    post = c.execute('SELECT * FROM posts WHERE id = ?',
+                        (post_id,)).fetchone()
+    c.close()
+    if post is None:
+        abort(404)
+    return post
     return render_template('threads.html')
 
 @ app.route('/games')
+@login_required
 def games():
-    
-    import json
-    import requests
-
-
     api_key = '0c99967b1d1c94b6e0a2a1fa4e2379db'
-
-
 
     sports_response = requests.get('https://api.the-odds-api.com/v3/sports', params={
         'api_key': api_key
@@ -126,10 +173,8 @@ def games():
         )
         print(sports_json['data'][0])
 
-
-
-# To get odds for a sepcific sport, use the sport key from the last request
-#   or set sport to "upcoming" to see live and upcoming across all sports
+    # To get odds for a sepcific sport, use the sport key from the last request
+    #   or set sport to "upcoming" to see live and upcoming across all sports
     sport_key = 'upcoming'
 
     odds_response = requests.get('https://api.the-odds-api.com/v3/odds', params={
@@ -165,19 +210,44 @@ def games():
     return render_template('games.html')
 
 @ app.route('/faq')
-def faq(content=None):conn
+@login_required
+def faq(content=None):
     with open('static/betting101.txt', 'r') as f: 
         content = f.readlines()
         content = [x.strip() for x in content]
     return render_template('faq.html', content=content)
 
-@ app.route('/settings')
-def settings():
-    return render_template('settings.html')
+@ app.route('/profile')
+@login_required
+def profile():
+    username = session['username']
+    c, conn = connection()
+    c.execute("SELECT * FROM users WHERE user_username = % s", (escape_string(username),))
+    acct = c.fetchone()
+    name = acct[1]
+    if name is None:
+        name = username
+        c.execute("UPDATE users SET user_name = %s WHERE user_username = %s", (escape_string(name), escape_string(username)))
+    return render_template('profile.html', name=name, username=username)
 
-@ app.route('/about')
-def about():
-    return 'About'
+@ app.route('/newPost', methods=["GET", "POST"])
+@login_required
+def add_post():
+    if request.method == "GET":
+        return render_template('add_post.html')
+    if request.method == "POST":
+        post = request.form['post']
+
+        if not post:
+            flash('Text is required!')
+        else:
+            c, conn = connection()
+            conn.execute('INSERT INTO posts (post) VALUES (?)',
+                         (content))
+            c.commit()
+            c.close()
+            return redirect(url_for('index'))
+        return render_template('add_post.html')
 
 
 
