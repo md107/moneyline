@@ -301,6 +301,24 @@ ul {
     position: relative;
 }
 
+.to_thread_detail {
+    display: block;
+    position: relative;
+    overflow:auto;
+    background-color: #343434;
+    color: white;
+    cursor: pointer;
+    text-align: left;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+    font-size: 20px;
+    top: 50%;
+    width: 568px;
+    min-height: 50px;
+    padding: 10px;
+    margin-left: -20px;
+}
+
 .active, .collapsible:hover {
     background-color: #555;
 }

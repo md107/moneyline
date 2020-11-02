@@ -3,7 +3,6 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from flask_mail import Mail, Message
 from flask_bootstrap import Bootstrap
-from flask_wtf import FlaskForm 
 from wtforms import Form, TextField, PasswordField, BooleanField, validators
 from wtforms.validators import InputRequired, Email, Length
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -16,13 +15,12 @@ import gc, re
 import json
 import requests
 from functools import wraps
-from forms.py import EditProfileForn
+from forms import EditProfileForm
 
 import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '999999999999999'
-app = Flask(__name__)
 
 # Change this to your secret key (can be anything, it's for extra protection)
 app.secret_key = 'your secret key'
@@ -128,11 +126,16 @@ def threads():
     c, conn = connection()
     c.execute("SELECT * FROM posts ORDER BY post_posted DESC LIMIT 5")
     posts = c.fetchall()
+    ids = [post[0] for post in posts]
+    users = [post[1] for post in posts]
+    bodies = [post[2] for post in posts]
+    data = zip(ids,users,bodies)
     id1, id2, id3, id4, id5 = (post[0] for post in posts)
     user1, user2, user3, user4, user5 = (post[1] for post in posts)
     body1, body2, body3, body4, body5 = (post[2] for post in posts)
 
-    return render_template('threads.html', id1=id1, id2=id2, id3=id3, id4=id4, id5=id5,
+    return render_template('threads.html', ids=ids, users=users, bodies=bodies, data=data,
+                                            id1=id1, id2=id2, id3=id3, id4=id4, id5=id5,
                                             user1=user1, user2=user2, user3=user3, user4=user4, user5=user5, 
                                             body1=body1, body2=body2, body3=body3, body4=body4, body5=body5)
 
@@ -177,9 +180,10 @@ def profile():
         name = username
         c.execute("UPDATE users SET user_name = %s WHERE user_username = %s", (escape_string(name), escape_string(username)))
     return render_template('profile.html', name=name, username=username)
+
 def avatar(self, size):
-        digest = md5(username.lower().encode('utf-8')).hexdigest()
-        return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(digest, size)
+    digest = md5(username.lower().encode('utf-8')).hexdigest()
+    return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(digest, size)
 
 @ app.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
