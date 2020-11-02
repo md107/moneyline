@@ -167,6 +167,9 @@ def profile():
         name = username
         c.execute("UPDATE users SET user_name = %s WHERE user_username = %s", (escape_string(name), escape_string(username)))
     return render_template('profile.html', name=name, username=username)
+def avatar(self, size):
+        digest = md5(username.lower().encode('utf-8')).hexdigest()
+        return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(digest, size)
 
 @ app.route('/newPost', methods=["GET", "POST"])
 @login_required
