@@ -16,15 +16,6 @@
     <input type='logout_button' onClick='window.location.href="/logout";' value="Log Out"/>
 </div>
 
-    <table>
-        <tr valign="top">
-            <td><img src="{{ users.avatar(128) }}"></td>
-            <td><h1>User: {{ users.user_username }}</h1></td>
-        </tr>
-    </table>
-    <hr>
-    
-
     <h1>Edit Profile</h1>
     <form action="" method="POST">
         {{ form.hidden_tag() }}
