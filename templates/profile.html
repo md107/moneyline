@@ -16,6 +16,9 @@
     <input type='logout_button' onClick='window.location.href="/logout";' value="Log Out"/>
 </div>
 
+{% endblock %}
+
+{% extends "layout.html" %}
 {% block content %}
     <table>
         <tr valign="top">
@@ -33,6 +36,9 @@
     </table>
     {% endfor %}
 
+{% endblock %}
+
+{% extends "layout.html" %}
 {% block content %}
     <h1>Edit Profile</h1>
     <form action="" method="post">
@@ -58,4 +64,4 @@
                 <p><a href="{{ url_for('edit_profile') }}">Edit your profile</a></p>
                 {% endif %}
 
-{%endblock%}
+{% endblock %}
