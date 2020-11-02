@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MoneyLine</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type= "text/css" href="{{url_for('static', filename='css/main.css')}}">
+    <link rel="icon" href="data:,">
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+</head>
+  <body>
+    <div class='box'>
+        <div class='scroller-box'>
+            <h1>Thread</h1>
+            <div class='circle' style='float:left;width:20%;font-size:18px;'>
+                PROFILE
+            </div>
+            <div style='float:right;width:75%;word-wrap:break-word;font-size:20px;'>
+                <h2 style='font-size:22px;margin-top:0;'>{{username}}</h2>
+                <p style='font-weight:normal;'>{{bodytext}}</p>
+            </div>
+        </div>
+        <form method="post" action="" style='margin-bottom:0px;'>
+            <input id="post" type="text" name="post" style="height:100px;width:549px;vertical-align:top;overflow:visible;font-size:20px;margin-bottom:0px;"/>
+            <br>
+            <ul style='columns:2;-webkit-columns:2;-moz-columns:2;padding: 20px 0 0 0;margin: 0 auto;'>
+                <li style='display:block;'><input type="back_to_login" value="Cancel" onClick="history.back()" /></li>
+                <li style='display:block;'><input type="submit" value="Submit" /></li>
+            </ul>
+        </form>
+    </div>   
+  </body>
+  
+</html>

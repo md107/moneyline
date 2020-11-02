@@ -127,25 +127,34 @@ def threads():
     c, conn = connection()
     c.execute("SELECT * FROM posts ORDER BY post_posted DESC LIMIT 5")
     posts = c.fetchall()
+    id1, id2, id3, id4, id5 = (post[0] for post in posts)
     user1, user2, user3, user4, user5 = (post[1] for post in posts)
     body1, body2, body3, body4, body5 = (post[2] for post in posts)
 
-    return render_template('threads.html', user1=user1, user2=user2, user3=user3, user4=user4, user5=user5, body1=body1, body2=body2, body3=body3, body4=body4, body5=body5)
+    return render_template('threads.html', id1=id1, id2=id2, id3=id3, id4=id4, id5=id5,
+                                            user1=user1, user2=user2, user3=user3, user4=user4, user5=user5, 
+                                            body1=body1, body2=body2, body3=body3, body4=body4, body5=body5)
 
 @ app.route('/games')
 @login_required
 def games():
     f = open('odds.json')
     odds = json.load(f)
-
+    teams = []
+    bets = []
     for odd in odds:
         team1, team2 = odd['teams']
-        odds = []
+        teams.append([team1, team2])
+        curr_bets = []
         for site in odd['sites']:
-            odds.append(site['odds']['h2h'])
-        print(team1,',', team2, odds)
+            curr_bets.append(site['odds']['h2h'])
+        bets.append(curr_bets)
+    print(teams)
+    for i in range(len(teams)):
+        print(teams[i])
+        print(bets[i])
         print()
-    return render_template('games.html')
+    return render_template('games.html', teams=teams, bets=bets)
 
 @ app.route('/faq')
 @login_required
@@ -185,6 +194,16 @@ def add_post():
         message = 'Please add body text!'
 
     return render_template('add_post.html',message=message)
+
+@app.route('/threads/<thread_id>', methods=["GET", "POST"])
+@login_required
+def page(thread_id):
+    thread_id = thread_id
+    c, conn = connection()
+    c.execute("SELECT * FROM posts WHERE post_id = %s", thread_id)
+    thread = c.fetchone()
+
+    return render_template('thread_detail.html', id=thread[0], username=thread[1], bodytext=thread[2], date_posted=thread[3])
 
 @ app.route('/about')
 def about():

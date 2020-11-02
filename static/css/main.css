@@ -498,3 +498,25 @@ ul {
     background: #39dc79;
     color: #000;
 }
+
+
+.add_bet {
+    border: none;
+    outline: none;
+    width: 50%;
+    height: 40px;
+    bottom: 0;
+    left: 25%;
+    background: #1c8adb;
+    color: #fff;
+    font-size: 18px;
+    text-align: center;
+    border-radius: 20px;
+}
+
+.add_bet:hover
+{
+    cursor: pointer;
+    background: #39dc79;
+    color: #000;
+}

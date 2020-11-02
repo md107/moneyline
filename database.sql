@@ -30,14 +30,23 @@ CREATE TABLE posts(
 
 CREATE TABLE comments(
     comment_id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    comment_thread_id BIGINT NOT NULL FOREIGN KEY REFERENCES threads(thread_id),
+    comment_thread_id BIGINT NOT NULL,
     comment_username VARCHAR(50) NOT NULL,
-    comment_bodytext VARCHAR(MAX),
+    comment_bodytext VARCHAR(10000),
     comment_posted DATETIME NOT NULL DEFAULT NOW()
 );
 
+CREATE TABLE allBets (
+    bet_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    team1 VARCHAR(500) NOT NULL,
+    team2 VARCHAR(500) NOT NULL,
+    odd VARCHAR(500)
+);
+
 CREATE TABLE betLists(
-    
+    bet_id BIGINT,
+    user_id BIGINT,
+    username VARCHAR(50)
 );
 
 DESCRIBE users;
