@@ -153,12 +153,8 @@ def games():
         for site in odd['sites']:
             curr_bets.append(site['odds']['h2h'])
         bets.append(curr_bets)
-    print(teams)
-    for i in range(len(teams)):
-        print(teams[i])
-        print(bets[i])
-        print()
-    return render_template('games.html', teams=teams, bets=bets)
+    data = zip(teams, bets)
+    return render_template('games.html', data=data)
 
 @ app.route('/faq')
 @login_required
@@ -226,8 +222,25 @@ def page(thread_id):
     c, conn = connection()
     c.execute("SELECT * FROM posts WHERE post_id = %s", thread_id)
     thread = c.fetchone()
+        
+    if request.method == "GET":
+        c.execute("SELECT * FROM comments WHERE comment_thread_id = %s", thread_id)
+        comments = c.fetchall()
+        users = [c[2] for c in comments]
+        dates = [c[4].strftime("%m/%d/%y %H:%M:%S") for c in comments]
+        comments = [c[3] for c in comments]
+        data = zip(users, comments, dates)
+        print(dates)
+        return render_template('thread_detail.html', id=thread[0], username=thread[1], bodytext=thread[2], date_posted=thread[3], data=data)
+    elif request.method == "POST" and 'post' in request.form:
+        username = session['username']
+        post = request.form['post']
+        c.execute("INSERT INTO comments (comment_thread_id, comment_username, comment_bodytext) VALUES (%s, %s, %s)", (thread_id, escape_string(username), escape_string(post)))
+        conn.commit()
+        return redirect(f"/threads/{thread_id}")
+    elif request.method == 'POST':
+        return redirect(f"/threads/{thread_id}")
 
-    return render_template('thread_detail.html', id=thread[0], username=thread[1], bodytext=thread[2], date_posted=thread[3])
 
 @ app.route('/about')
 def about():

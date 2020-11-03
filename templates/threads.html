@@ -5,7 +5,7 @@
     <h1><strong>Home</strong></h1>
 
     {% for id,user,body in data %}
-    <button class="to_thread_details" style='text-align:left' onClick='window.location.href="/threads/{{id}}";'>
+    <button class="collapsible" style='text-align:left' onClick='window.location.href="/threads/{{id}}";'>
         <div class='circle' style='float:left;width:20%;font-size:18px;'>
             AVATAR
         </div>
