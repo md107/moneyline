@@ -46,7 +46,6 @@ CREATE TABLE allBets (
 
 CREATE TABLE betLists(
     bet_id BIGINT,
-    user_id BIGINT,
     username VARCHAR(50)
 );
 

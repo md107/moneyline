@@ -146,6 +146,7 @@ def games():
     odds = json.load(f)
     teams = []
     bets = []
+    c, conn = connection()
     for odd in odds:
         team1, team2 = odd['teams']
         teams.append([team1, team2])
@@ -153,6 +154,14 @@ def games():
         for site in odd['sites']:
             curr_bets.append(site['odds']['h2h'])
         bets.append(curr_bets)
+        c.execute("SELECT * FROM allbets WHERE team1 = %s AND team2 = %s AND odd = %s;", [escape_string(team1), escape_string(team2), escape_string(str(curr_bets))])
+        b = c.fetchone()
+        if b:
+            pass
+        else:
+            c.execute("INSERT INTO allbets (team1, team2, odd) VALUES (%s, %s, %s);", (escape_string(team1), escape_string(team2), escape_string(str(curr_bets))))
+            conn.commit()
+
     data = zip(teams, bets)
     return render_template('games.html', data=data)
 
@@ -241,6 +250,22 @@ def page(thread_id):
     elif request.method == 'POST':
         return redirect(f"/threads/{thread_id}")
 
+@app.route('/myList')
+@login_required
+def myList():
+    username = session['username']
+    c, conn = connection()
+    c.execute("SELECT * FROM betlists WHERE username = %s;", (escape_string(username),))
+    data = c.fetchall()
+    bet_ids = [d[0] for d in data]
+    bets = []
+    for bet_id in bet_ids:
+        c.execute("SELECT team1, team2, odd FROM allbets WHERE bet_id = %s;", (bet_id,))
+        team1, team2, odd = c.fetchone()
+        odd=odd.replace('[[', '').replace(']]', '')
+        odd=odd.split('], [')
+        bets.append([team1, team2, odd])
+    return render_template('my_list.html', bets=bets)
 
 @ app.route('/about')
 def about():
