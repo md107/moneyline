@@ -139,7 +139,7 @@ def threads():
                                             user1=user1, user2=user2, user3=user3, user4=user4, user5=user5, 
                                             body1=body1, body2=body2, body3=body3, body4=body4, body5=body5)
 
-@ app.route('/games')
+@ app.route('/games', methods=["GET", "POST"])
 @login_required
 def games():
     f = open('odds.json')
@@ -161,8 +161,11 @@ def games():
         else:
             c.execute("INSERT INTO allbets (team1, team2, odd) VALUES (%s, %s, %s);", (escape_string(team1), escape_string(team2), escape_string(str(curr_bets))))
             conn.commit()
-
     data = zip(teams, bets)
+
+    if request.method == 'POST':
+        username = session['username']
+
     return render_template('games.html', data=data)
 
 @ app.route('/faq')
@@ -244,10 +247,13 @@ def page(thread_id):
     elif request.method == "POST" and 'post' in request.form:
         username = session['username']
         post = request.form['post']
+        if not post:
+            return redirect(f"/threads/{thread_id}")
         c.execute("INSERT INTO comments (comment_thread_id, comment_username, comment_bodytext) VALUES (%s, %s, %s)", (thread_id, escape_string(username), escape_string(post)))
         conn.commit()
         return redirect(f"/threads/{thread_id}")
     elif request.method == 'POST':
+        message = 'Missing information'
         return redirect(f"/threads/{thread_id}")
 
 @app.route('/myList')
