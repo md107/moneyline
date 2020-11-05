@@ -1,1 +1,3 @@
-Bug occurs when trying to compile the code after changes were made to implement profile editing
+Bug occurs when trying to compile the code for forms.py -- Lucas working on it
+Bug occurs when trying to render edit_profile.html -- Lucas working on it
+Bug occurs when trying to implement random avatar feature -- Arya working on it
