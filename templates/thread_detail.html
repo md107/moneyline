@@ -19,8 +19,12 @@
             
             <div style='float:right;width:75%;word-wrap:break-word;font-size:20px;'>
                 <h2 style='font-size:22px;margin-top:0;'>{{username}}</h2>
-                <p style='font-weight:normal;'>{{bodytext}}</p>
+                <p style='font-weight:normal;'>{{bodytext}}</p>        
+                <ul class="icons">
+                    <input onclick="change()" type="button" class='fa-thumbs-o-up' id="likeButton" value='Like' style="font-size:18px"></input>
+                </ul>    
             </div> 
+
 
             <div style='width:608px;height:400px;overflow:auto;position:relative;margin-left:-30px;margin-top:40px'>
                 <table width='100%'>
@@ -41,9 +45,9 @@
                 </table>
             </div>
         </div>
+        <div class="message">{{ message }}</div>
         <form method="post" action="" style='position:absolute;bottom:0px;'>
             <input id="post" type="text" name="post" style="height:50px;width:549px;vertical-align:top;overflow:visible;font-size:20px;position:absolute;bottom:120px;background:#000000;"/>
-            <p>{{message}}</p>
             <br>
             <ul style='columns:2;-webkit-columns:2;-moz-columns:2;list-style-type: none;'>
                 <li style='display:block;'><input type="back" value="Cancel" onClick='window.location.href="/threads";' /></li>
@@ -52,5 +56,13 @@
         </form>
     </div>   
   </body>
+
+  <script>
+      function change() {
+        var elem = document.getElementById("likeButton");
+        if (elem.value == "Unlike") elem.value = 'Like';
+        else elem.value = "Unlike";
+        }
+  </script>
   
 </html>

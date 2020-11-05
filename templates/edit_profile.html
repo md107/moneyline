@@ -1,28 +1,34 @@
-{% extends "layout.html" %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MoneyLine</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type= "text/css" href="{{url_for('static', filename='css/main.css')}}">
+    <link rel="icon" href="data:,">
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+</head>
 
-{% block content %}
-    <h1>Edit Profile</h1>
-    <form action="" method="POST">
-        {{ form.hidden_tag() }}
-        <p>
-            {{ form.username.label }}<br>
-            {{ form.username(size=32) }}<br>
-            {% for error in form.username.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.about_me.label }}<br>
-            {{ form.about_me(cols=50, rows=4) }}<br>
-            {% for error in form.about_me.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>{{ form.submit() }}</p>
-    </form>
+  <body>
+    <div class='box'>
+        <h1><br><strong>Edit Profile</strong></h1>
+        <br/>
 
-{% if users == current_user %}
-                <p><a href="{{ url_for('edit_profile') }}">Edit your profile</a></p>
-                {% endif %}
-
-{% endblock %}
+        <form method="post" action="">
+            <label style='font-size: 20px;'>Edit User's Name:</label>
+            <input id='name' type="text" name="name" size="18" maxlength="50" placeholder="{{name}}">
+            <br/>
+            <br/>
+            <br/>
+            <label style='font-size: 20px;'>Edit User's About Me:</label>
+            <input id='about' type="text" name="about" size="18" maxlength="2000" style='height:100px;padding-top:5px;overflow-wrap: break-word;vertical-align:top;' placeholder="{{about}}">
+            <br/>
+            <ul style='columns:2;-webkit-columns:2;-moz-columns:2;list-style-type: none;position:absolute;bottom:0px;'>
+                <li style='display:block;'><input type="back" value="Cancel" onClick='window.location.href="/profile";' /></li>
+                <li style='display:block;'><input type="submit" value="Submit" /></li>
+            </ul>
+        </form>
+    </div>   
+  </body>
+  
+</html>

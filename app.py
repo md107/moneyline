@@ -16,10 +16,10 @@ import json
 import requests
 from functools import wraps
 from forms import EditProfileForm
-
 import os
 
 app = Flask(__name__)
+
 app.config['SECRET_KEY'] = '999999999999999'
 
 # Change this to your secret key (can be anything, it's for extra protection)
@@ -68,7 +68,11 @@ def index():
             input_password = str(request.form['pswrd'])
             c.execute("SELECT * FROM users WHERE user_username = % s", (escape_string(input_username),))
             data = c.fetchone()
-        
+
+            if not data:
+                error = 'Invalid credential! Please try again.'
+                return render_template("login.html", error = error)        
+
             if input_password == data[3]:
                 session['loggedin'] = True
                 session['username'] = input_username
@@ -103,6 +107,8 @@ def signup():
             message = "Invalid username!"
         elif not username or not password or not email:
             message = "Missing information!"
+        elif len(password) < 6:
+            message = "Invalid password!"
         elif password != confirm_pw:
             message = 'Password not match, please try again'
         else:
@@ -161,10 +167,11 @@ def games():
         else:
             c.execute("INSERT INTO allbets (team1, team2, odd) VALUES (%s, %s, %s);", (escape_string(team1), escape_string(team2), escape_string(str(curr_bets))))
             conn.commit()
-    data = zip(teams, bets)
-
+    
     if request.method == 'POST':
         username = session['username']
+
+    data = zip(teams, bets)
 
     return render_template('games.html', data=data)
 
@@ -196,17 +203,31 @@ def avatar(self, size):
 @ app.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
-    form = EditProfileForm()
-    if form.validate_on_submit():
-        current_user.username = form.username.data
-        current_user.about_me = form.about_me.data
-        db.session.commit()
-        flash('Your changes have been saved.')
-        return redirect(url_for('edit_profile'))
-    elif request.method == 'GET':
-        form.username.data = current_user.username
-        form.about_me.data = current_user.about_me
-    return render_template('edit_profile.html', title='Edit Profile', form=form)
+    username = session['username']
+    c, conn = connection()
+    c.execute('SELECT * FROM users WHERE user_username = %s;', (escape_string(username),))
+    acct = c.fetchone()
+    print(acct)
+
+    if not acct:
+        return redirect(url_for("profile"))
+    
+    id = acct[0]
+    name = acct[1]
+    abt = acct[5]
+
+    if request.method == 'POST' and 'name' in request.form and 'about' in request.form:
+        newName = request.form['name']
+        newAbout = request.form['about']
+
+        if not newName or not newAbout:
+            return redirect(url_for("profile"))
+        else:
+            c.execute('UPDATE users SET user_name = %s, user_about = %s WHERE user_id = %s AND user_username = %s;', (newName, newAbout, id, escape_string(username)))
+            conn.commit()
+            return redirect(url_for("profile"))        
+
+    return render_template('edit_profile.html', name=name, about=abt)
 
     
 @ app.route('/newPost', methods=["GET", "POST"])
@@ -218,9 +239,13 @@ def add_post():
         post = request.form['post']
         c, conn = connection()
 
-        c.execute("INSERT INTO posts (post_username, post_bodytext) VALUES (%s, %s)", (escape_string(username), escape_string(post)))       
-        conn.commit()
-        return redirect(url_for("threads"))
+        if not post:
+            message = 'Please enter post body text!'
+            return render_template('add_post.html',message=message)
+        else:
+            c.execute("INSERT INTO posts (post_username, post_bodytext) VALUES (%s, %s)", (escape_string(username), escape_string(post)))       
+            conn.commit()
+            return redirect(url_for("threads"))
 
     elif request.method == 'POST':
         message = 'Please add body text!'
@@ -230,25 +255,27 @@ def add_post():
 @app.route('/threads/<thread_id>', methods=["GET", "POST"])
 @login_required
 def page(thread_id):
+    message = ''
     thread_id = thread_id
     c, conn = connection()
     c.execute("SELECT * FROM posts WHERE post_id = %s", thread_id)
     thread = c.fetchone()
+
+    c.execute("SELECT * FROM comments WHERE comment_thread_id = %s ORDER BY comment_posted DESC;", thread_id)
+    comments = c.fetchall()
+    users = [c[2] for c in comments]
+    dates = [c[4].strftime("%m/%d/%y %H:%M:%S") for c in comments]
+    comments = [c[3] for c in comments]
+    data = zip(users, comments, dates)
         
     if request.method == "GET":
-        c.execute("SELECT * FROM comments WHERE comment_thread_id = %s", thread_id)
-        comments = c.fetchall()
-        users = [c[2] for c in comments]
-        dates = [c[4].strftime("%m/%d/%y %H:%M:%S") for c in comments]
-        comments = [c[3] for c in comments]
-        data = zip(users, comments, dates)
-        print(dates)
-        return render_template('thread_detail.html', id=thread[0], username=thread[1], bodytext=thread[2], date_posted=thread[3], data=data)
-    elif request.method == "POST" and 'post' in request.form:
+        return render_template('thread_detail.html', id=thread[0], username=thread[1], bodytext=thread[2], date_posted=thread[3], data=data, message=message)
+    elif request.method == "POST":
         username = session['username']
         post = request.form['post']
         if not post:
-            return redirect(f"/threads/{thread_id}")
+            message = 'Please enter a comment before submit!'
+            return render_template('thread_detail.html', id=thread[0], username=thread[1], bodytext=thread[2], date_posted=thread[3], data=data, message=message)
         c.execute("INSERT INTO comments (comment_thread_id, comment_username, comment_bodytext) VALUES (%s, %s, %s)", (thread_id, escape_string(username), escape_string(post)))
         conn.commit()
         return redirect(f"/threads/{thread_id}")
@@ -261,7 +288,7 @@ def page(thread_id):
 def myList():
     username = session['username']
     c, conn = connection()
-    c.execute("SELECT * FROM betlists WHERE username = %s;", (escape_string(username),))
+    c.execute("SELECT * FROM betlists WHERE username = %s ORDER BY bet_id DESC;", (escape_string(username),))
     data = c.fetchall()
     bet_ids = [d[0] for d in data]
     bets = []

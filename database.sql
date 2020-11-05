@@ -16,6 +16,7 @@ CREATE TABLE users(
     user_username VARCHAR(50) NOT NULL,
     user_password VARCHAR(50) NOT NULL,
     user_email VARCHAR(120) NOT NULL,
+    user_about VARCHAR(10000),
     about_me VARCHAR(140) DEFAULT NULL
     date_created DATETIME NOT NULL DEFAULT NOW(),
     --  privacy VARCHAR(50) NOT NULL DEFAULT 'public',
