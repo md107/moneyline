@@ -38,6 +38,16 @@ img {
     display: block;
 }
 
+td {
+    padding:15px;
+    text-align:left;
+}
+
+table {
+    border-color: seashell;
+    overflow-y: scroll;
+}
+
 .icon {
     text-decoration: none;
     text-decoration: none;
@@ -126,6 +136,9 @@ ul {
     height: 40px;
     color: #fff;
     font-size: 16px;
+    vertical-align: top;
+    line-height: 16px;
+    overflow-y: scroll;
 }
    
 .box input[type="submit"]
@@ -142,6 +155,26 @@ ul {
 }
    
 .box input[type="submit"]:hover
+{
+    cursor: pointer;
+    background: #39dc79;
+    color: #000;
+}
+
+.box input[type="back"]
+{
+    border: none;
+    outline: none;
+    height: 60px;
+    background: #1c8adb;
+    color: #fff;
+    font-size: 18px;
+    text-align: center;
+    border-radius: 20px;
+    margin-top: 20px;
+}
+   
+.box input[type="back"]:hover
 {
     cursor: pointer;
     background: #39dc79;
@@ -202,6 +235,25 @@ ul {
 }
    
 .box input[type="back_to_login"]:hover
+{
+    cursor: pointer;
+    background: #39dc79;
+    color: #000;
+}
+
+.box input[type="redirect"]
+{
+    border: none;
+    outline: none;
+    height: 40px;
+    background: #1c8adb;
+    color: #fff;
+    font-size: 18px;
+    text-align: center;
+    border-radius: 20px;
+}
+   
+.box input[type="redirect"]:hover
 {
     cursor: pointer;
     background: #39dc79;
@@ -301,6 +353,24 @@ ul {
     position: relative;
 }
 
+.to_thread_detail {
+    display: block;
+    position: relative;
+    overflow:auto;
+    background-color: #343434;
+    color: white;
+    cursor: pointer;
+    text-align: left;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+    font-size: 20px;
+    top: 50%;
+    width: 568px;
+    min-height: 50px;
+    padding: 10px;
+    margin-left: -20px;
+}
+
 .active, .collapsible:hover {
     background-color: #555;
 }
@@ -371,7 +441,21 @@ ul {
     text-align: center;
     background: #636262;
     padding: 0;
-  }
+}
+
+.circle>img {
+    line-height:100px;
+}
+
+.comment_circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 30px;
+    text-align: center;
+    background: #636262;
+    display:inline-block;
+}
 
 .thread_footer {
     background: red;
@@ -428,6 +512,25 @@ ul {
 
 .tabcontent::-webkit-scrollbar {
     display: none;
+}
+
+.box input[type="button"] {
+    border: none;
+    outline: none;
+    width: 100%;
+    height: 30px;
+    background: #1c8adb;
+    color: #fff;
+    font-size: 18px;
+    text-align: center;
+    border-radius: 20px;
+}
+
+.box input[type="button"]:hover
+{
+    cursor: pointer;
+    background: #39dc79;
+    color: #000;
 }
 
 .box input[type="logout_button"] {
@@ -489,6 +592,49 @@ ul {
 }
 
 .box input[type="setting_button"]:hover
+{
+    cursor: pointer;
+    background: #39dc79;
+    color: #000;
+}
+
+.box input[type="betlist_button"] {
+    border: none;
+    outline: none;
+    width: 50%;
+    height: 40px;
+    position: absolute;
+    bottom: 180px;
+    left: 25%;    
+    background: #1c8adb;
+    color: #fff;
+    font-size: 18px;
+    text-align: center;
+    border-radius: 20px;
+}
+
+.box input[type="betlist_button"]:hover
+{
+    cursor: pointer;
+    background: #39dc79;
+    color: #000;
+}
+
+.add_bet {
+    border: none;
+    outline: none;
+    width: 50%;
+    height: 40px;
+    bottom: 0;
+    left: 25%;
+    background: #1c8adb;
+    color: #fff;
+    font-size: 18px;
+    text-align: center;
+    border-radius: 20px;
+}
+
+.add_bet:hover
 {
     cursor: pointer;
     background: #39dc79;

@@ -7,18 +7,18 @@
     <link rel="stylesheet" type= "text/css" href="{{url_for('static', filename='css/main.css')}}">
     <link rel="icon" href="data:,">
     <script src='https://kit.fontawesome.com/a076d05399.js'></script>
-    
-    
 </head>
   <body>
     <div class='box'>
         <h1>Add a post</h1>
         <form method="post" action="{{ url_for('add_post') }}">
             <input id="post" type="text" name="post" style="height:400px;width:549px;vertical-align:top;overflow:visible;font-size:20px;"/>
+            <div class="message">{{ message }}</div>
+
             <br>
             <input type="submit" value="Submit" />
-            <input type="back_to_login" value="Cancel" onClick="history.back()" />
-          </form>
+            <input type="back_to_login" value="Cancel" onClick='window.location.href="/threads";' />
+        </form>
     </div>   
   </body>
   

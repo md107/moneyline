@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MoneyLine</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type= "text/css" href="{{url_for('static', filename='css/main.css')}}">
+    <link rel="icon" href="data:,">
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+</head>
+  <body>
+    <div class='box'>
+        <div class='scroller_box' style='height:738px;'>
+            <h1>My Betting List</h1>
+
+            {% for bet in bets %}
+            <button class="collapsible">
+                <ul class='login-menu'>
+                    <li><a style='font-size: 20px;'>{{bet[0]}}</a></li>
+                    <li><a style='font-size: 20px;'>{{bet[1]}}</a></li>
+                </ul>
+            </button>
+    
+            <div class="content">
+                <p style="text-align:center;font-size:20px;">Betting Odds</p>
+                <ul style='text-align:center;margin-left:-40px;'>
+                    {% for b in bet[2]%}
+                        <li style='display: block;'><a style='font-size: 20px;'>[{{b}}]</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endfor %}
+    
+        </div>   
+        <input style='position:absolute;left:25%;bottom:-14px;width:50%;' type="back_to_login" value="Cancel" onClick="history.back()" />
+ 
+    </div>   
+  </body>
+  
+  <script>
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+  
+    for (i = 0; i < coll.length; i++) {
+      coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.maxHeight){
+          content.style.maxHeight = null;
+        } else {
+          content.style.maxHeight = content.scrollHeight + "px";
+        } 
+      });
+    }
+  </script> 
+  
+</html>

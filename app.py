@@ -3,11 +3,11 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from flask_mail import Mail, Message
 from flask_bootstrap import Bootstrap
-from flask_wtf import FlaskForm 
 from wtforms import Form, TextField, PasswordField, BooleanField, validators
 from wtforms.validators import InputRequired, Email, Length
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from flask_mysqldb import MySQL
 from MySQLdb import escape_string
 from dbconnect import connection
 from passlib.hash import sha256_crypt
@@ -15,18 +15,31 @@ import gc, re
 import json
 import requests
 from functools import wraps
-
+from forms import EditProfileForm
 import os
 
 app = Flask(__name__)
+
 app.config['SECRET_KEY'] = '999999999999999'
+
+# Change this to your secret key (can be anything, it's for extra protection)
+app.secret_key = 'your secret key'
+
+# Enter your database connection details below
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'csds393'
+app.config['MYSQL_PASSWORD'] = 'moneyline'
+app.config['MYSQL_DB'] = 'MoneyLine'
+
+# Intialize MySQL
+db = MySQL(app)
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////mnt/c/Users/antho/Documents/login-example/database.db'
 # bootstrap = Bootstrap(app)
 # db = SQLAlchemy(app)
 # login_manager = LoginManager()
 # login_manager.init_app(app)
 # login_manager.login_view = 'login'
-db = SQLAlchemy(app)
+# db = SQLAlchemy(app)
 
 def login_required(f):
     @wraps(f)
@@ -55,7 +68,11 @@ def index():
             input_password = str(request.form['pswrd'])
             c.execute("SELECT * FROM users WHERE user_username = % s", (escape_string(input_username),))
             data = c.fetchone()
-        
+
+            if not data:
+                error = 'Invalid credential! Please try again.'
+                return render_template("login.html", error = error)        
+
             if input_password == data[3]:
                 session['loggedin'] = True
                 session['username'] = input_username
@@ -76,6 +93,7 @@ def signup():
         username = request.form['username']
         email = request.form['email']
         password = str(request.form['pswrd'])
+        confirm_pw = str(request.form['cfpw'])
         c, conn = connection()
 
         c.execute("SELECT * FROM users WHERE user_username = % s", (escape_string(username),))
@@ -89,6 +107,10 @@ def signup():
             message = "Invalid username!"
         elif not username or not password or not email:
             message = "Missing information!"
+        elif len(password) < 6:
+            message = "Invalid password!"
+        elif password != confirm_pw:
+            message = 'Password not match, please try again'
         else:
             c.execute("INSERT INTO users (user_username, user_password, user_email) VALUES (%s, %s, %s)", (escape_string(username), escape_string(password), escape_string(email)))               
             conn.commit()
@@ -107,75 +129,51 @@ def reset_pw():
 @ app.route('/threads')
 @login_required
 def threads():
-    conn, c = connection()
-    post = c.execute('SELECT * FROM posts WHERE id = ?',
-                        (post_id,)).fetchone()
-    c.close()
-    if post is None:
-        abort(404)
-    return post
-    return render_template('threads.html')
+    c, conn = connection()
+    c.execute("SELECT * FROM posts ORDER BY post_posted DESC LIMIT 5")
+    posts = c.fetchall()
+    ids = [post[0] for post in posts]
+    users = [post[1] for post in posts]
+    bodies = [post[2] for post in posts]
+    data = zip(ids,users,bodies)
+    id1, id2, id3, id4, id5 = (post[0] for post in posts)
+    user1, user2, user3, user4, user5 = (post[1] for post in posts)
+    body1, body2, body3, body4, body5 = (post[2] for post in posts)
 
-@ app.route('/games')
+    return render_template('threads.html', ids=ids, users=users, bodies=bodies, data=data,
+                                            id1=id1, id2=id2, id3=id3, id4=id4, id5=id5,
+                                            user1=user1, user2=user2, user3=user3, user4=user4, user5=user5, 
+                                            body1=body1, body2=body2, body3=body3, body4=body4, body5=body5)
+
+@ app.route('/games', methods=["GET", "POST"])
 @login_required
 def games():
-    api_key = '0c99967b1d1c94b6e0a2a1fa4e2379db'
+    f = open('odds.json')
+    odds = json.load(f)
+    teams = []
+    bets = []
+    c, conn = connection()
+    for odd in odds:
+        team1, team2 = odd['teams']
+        teams.append([team1, team2])
+        curr_bets = []
+        for site in odd['sites']:
+            curr_bets.append(site['odds']['h2h'])
+        bets.append(curr_bets)
+        c.execute("SELECT * FROM allbets WHERE team1 = %s AND team2 = %s AND odd = %s;", [escape_string(team1), escape_string(team2), escape_string(str(curr_bets))])
+        b = c.fetchone()
+        if b:
+            pass
+        else:
+            c.execute("INSERT INTO allbets (team1, team2, odd) VALUES (%s, %s, %s);", (escape_string(team1), escape_string(team2), escape_string(str(curr_bets))))
+            conn.commit()
+    
+    if request.method == 'POST':
+        username = session['username']
 
-    sports_response = requests.get('https://api.the-odds-api.com/v3/sports', params={
-        'api_key': api_key
-    })
+    data = zip(teams, bets)
 
-    sports_json = json.loads(sports_response.text)
-
-    if not sports_json['success']:
-        print(
-            'There was a problem with the sports request:',
-            sports_json['msg']
-        )
-
-    else:
-        print()
-        print(
-            'Successfully got {} sports'.format(len(sports_json['data'])),
-            'Here\'s the first sport:'
-        )
-        print(sports_json['data'][0])
-
-    # To get odds for a sepcific sport, use the sport key from the last request
-    #   or set sport to "upcoming" to see live and upcoming across all sports
-    sport_key = 'upcoming'
-
-    odds_response = requests.get('https://api.the-odds-api.com/v3/odds', params={
-        'api_key': api_key,
-        'sport': sport_key,
-        'region': 'uk', # uk | us | eu | au
-        'mkt': 'h2h' # h2h | spreads | totals
-    })
-
-    odds_json = json.loads(odds_response.text)
-    if not odds_json['success']:
-        print(
-            'There was a problem with the odds request:',
-            odds_json['msg']
-      )
-
-    else:
-    # odds_json['data'] contains a list of live and 
-    #   upcoming events and odds for different bookmakers.
-    # Events are ordered by start time (live events are first)
-        print()
-        print(
-            'Successfully got {} events'.format(len(odds_json['data'])),
-            'Here\'s the first event:'
-        )
-        print(odds_json['data'][0])
-
-    # Check your usage
-        print()
-        print('Remaining requests', odds_response.headers['x-requests-remaining'])
-        print('Used requests', odds_response.headers['x-requests-used'])
-
-    return render_template('games.html')
+    return render_template('games.html', data=data)
 
 @ app.route('/faq')
 @login_required
@@ -198,24 +196,113 @@ def profile():
         c.execute("UPDATE users SET user_name = %s WHERE user_username = %s", (escape_string(name), escape_string(username)))
     return render_template('profile.html', name=name, username=username)
 
+def avatar(self, size):
+    digest = md5(username.lower().encode('utf-8')).hexdigest()
+    return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(digest, size)
+
+@ app.route('/edit_profile', methods=['GET', 'POST'])
+@login_required
+def edit_profile():
+    username = session['username']
+    c, conn = connection()
+    c.execute('SELECT * FROM users WHERE user_username = %s;', (escape_string(username),))
+    acct = c.fetchone()
+    print(acct)
+
+    if not acct:
+        return redirect(url_for("profile"))
+    
+    id = acct[0]
+    name = acct[1]
+    abt = acct[5]
+
+    if request.method == 'POST' and 'name' in request.form and 'about' in request.form:
+        newName = request.form['name']
+        newAbout = request.form['about']
+
+        if not newName or not newAbout:
+            return redirect(url_for("profile"))
+        else:
+            c.execute('UPDATE users SET user_name = %s, user_about = %s WHERE user_id = %s AND user_username = %s;', (newName, newAbout, id, escape_string(username)))
+            conn.commit()
+            return redirect(url_for("profile"))        
+
+    return render_template('edit_profile.html', name=name, about=abt)
+
+    
 @ app.route('/newPost', methods=["GET", "POST"])
 @login_required
 def add_post():
-    if request.method == "GET":
-        return render_template('add_post.html')
-    if request.method == "POST":
+    message =''
+    if request.method == "POST" and 'post' in request.form:
+        username = session['username']
         post = request.form['post']
+        c, conn = connection()
 
         if not post:
-            flash('Text is required!')
+            message = 'Please enter post body text!'
+            return render_template('add_post.html',message=message)
         else:
-            c, conn = connection()
-            conn.execute('INSERT INTO posts (post) VALUES (?)',
-                         (content))
-            c.commit()
-            c.close()
-            return redirect(url_for('index'))
-        return render_template('add_post.html')
+            c.execute("INSERT INTO posts (post_username, post_bodytext) VALUES (%s, %s)", (escape_string(username), escape_string(post)))       
+            conn.commit()
+            return redirect(url_for("threads"))
+
+    elif request.method == 'POST':
+        message = 'Please add body text!'
+
+    return render_template('add_post.html',message=message)
+
+@app.route('/threads/<thread_id>', methods=["GET", "POST"])
+@login_required
+def page(thread_id):
+    message = ''
+    thread_id = thread_id
+    c, conn = connection()
+    c.execute("SELECT * FROM posts WHERE post_id = %s", thread_id)
+    thread = c.fetchone()
+
+    c.execute("SELECT * FROM comments WHERE comment_thread_id = %s ORDER BY comment_posted DESC;", thread_id)
+    comments = c.fetchall()
+    users = [c[2] for c in comments]
+    dates = [c[4].strftime("%m/%d/%y %H:%M:%S") for c in comments]
+    comments = [c[3] for c in comments]
+    data = zip(users, comments, dates)
+        
+    if request.method == "GET":
+        return render_template('thread_detail.html', id=thread[0], username=thread[1], bodytext=thread[2], date_posted=thread[3], data=data, message=message)
+    elif request.method == "POST":
+        username = session['username']
+        post = request.form['post']
+        if not post:
+            message = 'Please enter a comment before submit!'
+            return render_template('thread_detail.html', id=thread[0], username=thread[1], bodytext=thread[2], date_posted=thread[3], data=data, message=message)
+        c.execute("INSERT INTO comments (comment_thread_id, comment_username, comment_bodytext) VALUES (%s, %s, %s)", (thread_id, escape_string(username), escape_string(post)))
+        conn.commit()
+        return redirect(f"/threads/{thread_id}")
+    elif request.method == 'POST':
+        message = 'Missing information'
+        return redirect(f"/threads/{thread_id}")
+
+@app.route('/myList')
+@login_required
+def myList():
+    username = session['username']
+    c, conn = connection()
+    c.execute("SELECT * FROM betlists WHERE username = %s ORDER BY bet_id DESC;", (escape_string(username),))
+    data = c.fetchall()
+    bet_ids = [d[0] for d in data]
+    bets = []
+    for bet_id in bet_ids:
+        c.execute("SELECT team1, team2, odd FROM allbets WHERE bet_id = %s;", (bet_id,))
+        team1, team2, odd = c.fetchone()
+        odd=odd.replace('[[', '').replace(']]', '')
+        odd=odd.split('], [')
+        bets.append([team1, team2, odd])
+    return render_template('my_list.html', bets=bets)
+
+@ app.route('/about')
+def about():
+    return render_template('about.html')
 
 if __name__ == "__main__":
     app.run(debug=True)

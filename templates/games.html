@@ -3,60 +3,27 @@
 <div class='scroller_box'>
     
     <h1><strong>Today's Games</strong></h1>
+
+    {% for teams,bets in data %}
     <button class="collapsible">
-        VS
-    </button>
-    <div class="content">
-        <br />
         <ul class='login-menu'>
-            <li><a style='font-size: 20px;' href='/about'>New Orleans Saints</a></li>
-            <li><a style='font-size: 20px;' href='/about'>Detroit Lions</a></li>
+            {% for team in teams %}
+            <li><a style='font-size: 20px;'>{{team}}</a></li>
+            {% endfor %}
         </ul>
-        <br />
-        <br />
-        <br />
-        <br />
-    </div>
-
-    <button class="collapsible">
-        VS
     </button>
     <div class="content">
-        <br />
-        <ul class='login-menu'>
-            <li><a style='font-size: 20px;' href='/about'>Los Angeles Chargers</a></li>
-            <li><a style='font-size: 20px;' href='/about'>Tampa Bay Buccaneers</a></li>
+        <p style="text-align:center;font-size:20px;">Betting Odds</p>
+        <ul style='text-align:center;margin-left:-40px;'>
+            {% for bet in bets %}
+            <li style='display: block;'><a style='font-size: 20px;'>{{bet}}</a></li>
+            {% endfor %}
         </ul>
+        <form method="post" action="">
+            <input style='position:relative;left:30%;bottom:-14px;width:40%;' type="redirect" onClick='window.location.href="/games";'  value="Add to my list" />
+        </form>
     </div>
+    {% endfor %}
 
-    <button class="collapsible">
-        VS
-    </button>
-    <div class="content">
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p> 
-    </div>
-
-    <button class="collapsible">
-        VS
-    </button>
-    <div class="content">
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-    </div>
-    
-    <button class="collapsible">Open Collapsible 5</button>
-    <div class="content">
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-    </div>
-
-    <button class="collapsible">Open Collapsible 6</button>
-    <div class="content">
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-    </div>
-
-    <button class="collapsible">Open Collapsible 7</button>
-    <div class="content">
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-    </div>
 </div>
-
 {%endblock%}
